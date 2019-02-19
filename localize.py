@@ -1,7 +1,27 @@
 import matplotlib.pyplot as plt
 import numpy as np 
 import math as mth
+import ctypes
 
+_STM_com = ctypes.CDLL('lib/STM_com.so')
+num_sen = 6
+# def test():
+#     global _STM_com
+#     init_result = _STM_com.stmcom_init()
+#     print(_STM_com.get_range_mm(1))
+
+
+
+
+
+
+#     print(_STM_com.get_signal_rate(1))
+#     print(_STM_com.get_ambient_rate(1))
+#     print(_STM_com.get_range_status(1))
+#     return init_result
+
+ 
+# print(test())
 # global variable
 bed_l = 1524
 bed_w = 914.4
@@ -13,8 +33,10 @@ center_offset = np.true_divide(center_offset,2)
 tol = 1e-6
 
 
-# test data
+
 x_range = range(-400,400,1)
+
+# test data
 t_0 = np.deg2rad(90)
 t_1 = np.deg2rad(135)
 t_2 = np.deg2rad(180)
@@ -23,13 +45,13 @@ t_4 = np.deg2rad(0)
 t_5 = np.deg2rad(45)
 t = np.array([t_0, t_1, t_2, t_3, t_4, t_5])
 # print(t_1,t_2, t_3)
-d_0 = 50             #mm 
-d_1 = 50*mth.sqrt(2) #mm 
-d_2 = 50             #mm
-d_3 = 50*mth.sqrt(2) #mm 
-d_4 = 4000           #mm
-d_5 = 50*mth.sqrt(2) #mm
-d = np.array([d_0, d_1, d_2, d_3, d_4, d_5])
+# d_0 = 50             #mm 
+# d_1 = 50*mth.sqrt(2) #mm 
+# d_2 = 50             #mm
+# d_3 = 50*mth.sqrt(2) #mm 
+# d_4 = 4000           #mm
+# d_5 = 50*mth.sqrt(2) #mm
+# d = np.array([d_0, d_1, d_2, d_3, d_4, d_5])
 #print(t,d)
 
 
@@ -42,13 +64,18 @@ def inLines(line, lines_):
         elif (abs(line[0]-l[0]) <=tol and abs(line[1]-l[1]) <=tol): return True 
     return False
 
+def init(t): 
+	global _STM_com
+	_STM_com.stmcom_init()
+	localize(t)
 
-def localize(d,t): 
 
+def localize(t): 
+	global _STM_com
 	# in frame of robot (x,y) = (0,0)
-	x_y_anchor =[] 
-	for sensor in range(len(d)):
-		dist_off = d[sensor] + center_offset[sensor]
+	x_y_anchor =[]  
+	for sensor in range(num_sen):
+		dist_off = _STM_com.get_range_mm(sensor) + center_offset[sensor]
 		x,y = dist_off*mth.cos(t[sensor]) , dist_off*mth.sin(t[sensor])
 		if(x> bed_w or y>bed_l): x,y = (0,0)
 		x_y_anchor.append([x,y])
@@ -136,7 +163,7 @@ def localize(d,t):
 	    translation.append([-1*corner[0],corner[1]])
 
 
-localize(d,t)
+init(t)
 
 
 

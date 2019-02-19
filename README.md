@@ -1,2 +1,4 @@
 # base-locomotion
-  Contains code for the localization and locomotion of the robot chassis 
+  This is the base-locomotion repository for CMU mechatronics S2019 Team A JollyRoger project ShipBot.
+
+##Overview

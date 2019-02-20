@@ -14,7 +14,7 @@
 
 #ifndef STMCOM_TTY
 //#define STMCOM_TTY "test.txt"
-#define STMCOM_TTY "/dev/ttyUSB1" // default tty
+#define STMCOM_TTY "/dev/ttyUSB2" // default tty
 #endif
 
 #define UART_BUFF_SIZE 500

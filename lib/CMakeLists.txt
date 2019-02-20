@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.5)
 project(stm_com)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -13,3 +13,4 @@ set(STMCOM_TEST_SOURCE
 add_library(STM_com ${STMCOM_SOURCE})
 
 add_executable(STM_com_test ${STMCOM_TEST_SOURCE})
+target_link_libraries(STM_com_test pthread)

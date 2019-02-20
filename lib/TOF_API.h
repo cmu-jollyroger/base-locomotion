@@ -5,7 +5,11 @@
 #ifndef STM_COM_TOF_API_H
 #define STM_COM_TOF_API_H
 
+
+int get_tof_idx(int tof_idx);
+
 int stmcom_init(void);
+
 
 int get_range_status(int tof_idx);
 
